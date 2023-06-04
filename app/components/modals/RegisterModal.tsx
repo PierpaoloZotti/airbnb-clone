@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
 import Modal from "./modal";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
@@ -16,6 +17,7 @@ import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -29,6 +31,11 @@ const RegisterModal = () => {
       password: "",
     },
   });
+
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -97,9 +104,9 @@ const RegisterModal = () => {
       />
       <div className='text-neutral-500 text-center mt-4 font-light'>
         <div className='flex flex-row items-center gap-2 justify-center'>
-          <div>Already have an account?</div>
+          <div>Yet part of zetabnb family?</div>
           <div
-            onClick={registerModal.onClose}
+            onClick={toggle}
             className='text-neutral-800 cursor-pointer hover:underline'
           >
             Log in
